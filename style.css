@@ -19,7 +19,6 @@ body {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
-    display: none;
     /* REMOVE THE DISPLAY NONE BEFORE PUSHING TO MASTER BRANCH */
 }
 
@@ -53,9 +52,9 @@ button {
     height: 50px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: #91dfff;
+    background-color: #82a9ff;
     border-radius: 3px;
-    border: 1px solid #91dfff;
+    border: 1px solid #82a9ff;
     margin-left: 1px;
 }
 
@@ -100,9 +99,9 @@ input {
 
 .play {
     padding: 12px 35px 12px 35px;
-    font-size: 27px;
+    font-size: 30px;
     font-weight: 500;
-    background-color: #91dfff;
+    background-color: #ff7aa6;
     border: 2px solid black;
     border-radius: 4px;
 }
@@ -123,6 +122,7 @@ input {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
+    display: none;
 }
 
 .home-button {
@@ -152,7 +152,7 @@ input {
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #c586ff;
+    background-color: #ce99ff;
 }
 
 .tie-score-container {
@@ -163,7 +163,7 @@ input {
     border: 1px solid black;
     border-radius: 5px;
     font-size: 25px;
-    background-color: #78a2ff;
+    background-color: #82a9ff;
 }
 
 .reset-button-container {
