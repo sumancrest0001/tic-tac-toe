@@ -129,8 +129,8 @@ input {
     position: absolute;
     top: 20px;
     left: 20px;
-    background-color: #91dfff;
-    border: 1px solid #91dfff;
+    background-color: #ff7aa6;
+    border: 1px solid #ff7aa6;
     font-size: 20px;
     font-family: 'Fredoka One', cursive;
     padding: 10px;
@@ -152,7 +152,7 @@ input {
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #ff7aa6;
+    background-color: #5dd0ff;
 }
 
 .tie-score-container {
@@ -163,7 +163,7 @@ input {
     border: 1px solid black;
     border-radius: 5px;
     font-size: 25px;
-    background-color: rgb(157, 166, 255);
+    background-color: #c586ff;
 }
 
 .reset-button-container {
@@ -174,8 +174,8 @@ input {
 }
 
 .reset-button {
-    background-color: #91dfff;
-    border: 1px solid #91dfff;
+    background-color: #ff7aa6;
+    border: 1px solid #ff7aa6;
     font-size: 20px;
     font-family: 'Fredoka One', cursive;
     padding: 10px 20px 10px 20px;
@@ -191,6 +191,7 @@ input {
     height: 333px;
     margin-top: 10px;
     border: 2px solid black;
+    background-color:rgb(162, 170, 255);
 }
 
 .board {
