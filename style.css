@@ -152,7 +152,7 @@ input {
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #5dd0ff;
+    background-color: #c586ff;
 }
 
 .tie-score-container {
@@ -163,7 +163,7 @@ input {
     border: 1px solid black;
     border-radius: 5px;
     font-size: 25px;
-    background-color: #c586ff;
+    background-color: #78a2ff;
 }
 
 .reset-button-container {
@@ -191,7 +191,7 @@ input {
     height: 333px;
     margin-top: 10px;
     border: 2px solid black;
-    background-color:rgb(162, 170, 255);
+    background-color:rgb(155, 209, 255);
 }
 
 .board {
