@@ -202,6 +202,14 @@ input {
 }
 
 .grid-cell {
+    display: flex;
+    justify-content: center;
     border: 1px solid black;
     cursor: pointer;
+}
+
+.cell-content {
+    display: flex;
+    align-items: center;
+    font-size: 60px;
 }
