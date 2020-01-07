@@ -19,6 +19,7 @@ body {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
+    display: none;
     /* REMOVE THE DISPLAY NONE BEFORE PUSHING TO MASTER BRANCH */
 }
 
@@ -122,7 +123,6 @@ input {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
-    display: none;
 }
 
 .home-button {
@@ -213,4 +213,18 @@ input {
     display: flex;
     align-items: center;
     font-size: 60px;
+}
+
+/* Results container */
+.results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+    display: none;
+}
+
+.results-banner {
+    font-size: 40px;
+    padding: 12px 35px 12px 35px;
 }
