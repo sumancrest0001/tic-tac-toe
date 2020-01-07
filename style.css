@@ -18,6 +18,9 @@ body {
     border-radius: 5px;
     padding: 20px;
     box-shadow: 5px 10px 20px black;
+    font-family: 'Fredoka One', cursive;
+    display: none;
+    /* REMOVE THE DISPLAY NONE BEFORE PUSHING TO MASTER BRANCH */
 }
 
 .title {
@@ -25,12 +28,12 @@ body {
     text-align: center;
     font-weight: bold;
     margin-top: 15px;
-    font-family: 'Fredoka One', cursive;
 }
 
 /* Buttons */
 button {
     outline: none;
+    cursor: pointer;
 }
 
 .player-buttons {
@@ -38,7 +41,6 @@ button {
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    font-family: 'Fredoka One', cursive;
 }
 
 .player-choices {
@@ -103,5 +105,47 @@ input {
     background-color: #91dfff;
     border: 2px solid black;
     border-radius: 4px;
+}
+
+/* Game container */
+.game-container {
+    width: 650px;
+    height: 550px;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
+}
+
+.home-button {
+    width: 50px;
+    height: 50px;
+    background-image: url('Icons/home.svg');
+    background-size: cover;
+    background-color: #91dfff;
+    border: 1px solid #91dfff;
+    border-radius: 30px;
+    padding: 30px;
+}
+
+.scores {
+    display: flex;
+    justify-content: center;
+}
+
+.player-score-container, .tie-score-container, .ai-score-container {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 25px;
+}
+
+.player-name, .tie-name, .ai-name {
+    margin-right: 10px;
 }
