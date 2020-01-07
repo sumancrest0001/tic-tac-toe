@@ -1,0 +1,107 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-image: linear-gradient(to left, #4a8cff 0%, #70daff 100%);
+    display: flex;
+    justify-content: center;
+}
+
+.home-container {
+    width: 650px;
+    height: 550px;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 5px 10px 20px black;
+}
+
+.title {
+    font-size: 55px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
+    font-family: 'Fredoka One', cursive;
+}
+
+/* Buttons */
+button {
+    outline: none;
+}
+
+.player-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    font-family: 'Fredoka One', cursive;
+}
+
+.player-choices {
+    font-size: 35px;
+    margin-right: 10px;
+}
+
+.one-player, .two-player {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #91dfff;
+    border-radius: 3px;
+    border: 1px solid #91dfff;
+    margin-left: 1px;
+}
+
+.one-player {
+    background-image: url('Icons/onePlayer.svg');
+}
+
+.two-player {
+    background-image: url('Icons/twoPlayer.svg');
+}
+
+/* Player names Input */
+.player-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    font-family: 'Lato', sans-serif;
+}
+
+.player-1-input, .player-2-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+    font-size: 30px;
+}
+
+input {
+    font-size: 18px;
+    padding: 8px;
+    margin-left: 7px;
+    font-family: 'Fredoka One', cursive;
+}
+
+/* Play button */
+.play-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.play {
+    padding: 12px 35px 12px 35px;
+    font-size: 27px;
+    font-weight: 500;
+    background-color: #91dfff;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-family: 'Fredoka One', cursive;
+}
