@@ -109,6 +109,9 @@ input {
 
 /* Game container */
 .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 650px;
     height: 550px;
     position: absolute;
@@ -124,6 +127,8 @@ input {
 
 .home-button {
     position: absolute;
+    top: 20px;
+    left: 20px;
     background-color: #91dfff;
     border: 1px solid #91dfff;
     font-size: 20px;
@@ -161,3 +166,29 @@ input {
     background-color: rgb(157, 166, 255);
 }
 
+.reset-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.reset-button {
+    background-color: #91dfff;
+    border: 1px solid #91dfff;
+    font-size: 20px;
+    font-family: 'Fredoka One', cursive;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+}
+
+/* Game board */
+.board-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 333px;
+    margin-top: 10px;
+    border: 1px solid black;
+}
