@@ -190,5 +190,18 @@ input {
     width: 350px;
     height: 333px;
     margin-top: 10px;
+    border: 2px solid black;
+}
+
+.board {
+    display: grid;
+    width: 350px;
+    height: 333px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cell {
     border: 1px solid black;
+    cursor: pointer;
 }
