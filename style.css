@@ -19,7 +19,6 @@ body {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
-    display: none;
     /* REMOVE THE DISPLAY NONE BEFORE PUSHING TO MASTER BRANCH */
 }
 
@@ -67,6 +66,11 @@ button {
     background-image: url('Icons/twoPlayer.svg');
 }
 
+.one-player.active, .two-player.active {
+    background-color: #ff7aa6;
+    border: 1px solid #ff7aa6;
+}
+
 /* Player names Input */
 .player-inputs {
     display: flex;
@@ -81,6 +85,10 @@ button {
     align-items: center;
     margin-bottom: 35px;
     font-size: 30px;
+}
+
+.player-2-input.inactive {
+    display: none;
 }
 
 input {
@@ -123,6 +131,7 @@ input {
     padding: 20px;
     box-shadow: 5px 10px 20px black;
     font-family: 'Fredoka One', cursive;
+    display: none;
 }
 
 .home-button {
@@ -190,7 +199,7 @@ input {
     width: 350px;
     height: 333px;
     margin-top: 10px;
-    border: 2px solid black;
+    border: 3px solid black;
     background-color:rgb(155, 209, 255);
 }
 
@@ -206,7 +215,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    border: 2px solid black;
     font-size: 60px;
     cursor: pointer;
 }
