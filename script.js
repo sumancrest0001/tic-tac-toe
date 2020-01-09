@@ -46,46 +46,46 @@ const renderGamePage = function() {
     home.style.display = "none";
     let game = document.querySelector(".game-container");
     game.style.display = "flex";
+
+    let gridCells = document.querySelectorAll(".grid-cell");
+    gridCells.forEach(cell => {
+    cell.addEventListener("click", updateBoard);
+})
 }
 
 const renderHomePage = function() {
-        let home = document.querySelector(".home-container");
-        home.style.display = "block";
-        let game = document.querySelector(".game-container");
-        game.style.display = "none";
+    let home = document.querySelector(".home-container");
+    home.style.display = "block";
+    let game = document.querySelector(".game-container");
+    game.style.display = "none";
+
+    let gridCells = document.querySelectorAll(".grid-cell");
+    gridCells.forEach(cell => {
+    cell.removeEventListener("click", updateBoard);
+})
 }
 
 
-let toggleActive = function(e) {
+let toggleActive = function() {
     let p1 = document.querySelector(".one-player");
     let p2 = document.querySelector(".two-player");
+    let player2Input = document.querySelector(".player-2-input");
 
     if (p1.classList.contains("active")) {
         p1.classList.remove("active");
         p2.classList.add("active");
+        player2Input.classList.remove("inactive");
     }
     else {
         p2.classList.remove("active");
         p1.classList.add("active");
-    }
-    toggleP2InputField();
-};
-
-
-let toggleP2InputField = function() {
-    let player2Input = document.querySelector(".player-2-input");
-    let p1 = document.querySelector(".one-player");
-
-    if (p1.classList.contains("active")) {
         player2Input.classList.add("inactive");
-    }
-    else {
-        player2Input.classList.remove("inactive");
+        
     }
 };
 
 const mainGame = (function() {
-    toggleP2InputField();
+    toggleActive();
     let onePlayerBtn = document.querySelector(".one-player");
     onePlayerBtn.addEventListener("click", toggleActive);
     
@@ -100,6 +100,7 @@ const mainGame = (function() {
     
     let homeBtn = document.querySelector(".home-button");
     homeBtn.addEventListener("click", renderHomePage);
+
 
 
 })();
@@ -117,5 +118,6 @@ const getPlayers = function() {
     let player2 = Player(p2Name, "O");
     return { player1, player2 };
 }
+
 
 
