@@ -3,24 +3,20 @@ let gameBoard = (function() {
     for (let i = 0; i < 9; i++) {
         board[i] = null;
     }
-
-    const getBoard = () => board;
-
     const renderBoard = function() {
         for (let i = 0; i < 9; i++) {
             if (board[i] !== null) {
-                let gridCell = document.getElementById(`grid${i}`);
+                let gridCell = document.querySelector(`[data-position=${i}]`);
                 gridCell.textContent = board[i];
             }
         }
     }
-
     const resetBoard = function() {
         for (let i = 0; i < 9; i++) {
             board[i] = null;
         }
     }
-    return { getBoard, renderBoard, resetBoard };
+    return { board, renderBoard, resetBoard };
 })();
 
 
@@ -46,11 +42,6 @@ const renderGamePage = function() {
     home.style.display = "none";
     let game = document.querySelector(".game-container");
     game.style.display = "flex";
-
-    let gridCells = document.querySelectorAll(".grid-cell");
-    gridCells.forEach(cell => {
-    cell.addEventListener("click", updateBoard);
-})
 }
 
 const renderHomePage = function() {
@@ -58,11 +49,6 @@ const renderHomePage = function() {
     home.style.display = "block";
     let game = document.querySelector(".game-container");
     game.style.display = "none";
-
-    let gridCells = document.querySelectorAll(".grid-cell");
-    gridCells.forEach(cell => {
-    cell.removeEventListener("click", updateBoard);
-})
 }
 
 
@@ -80,12 +66,29 @@ let toggleActive = function() {
         p2.classList.remove("active");
         p1.classList.add("active");
         player2Input.classList.add("inactive");
-        
     }
 };
 
+const getPlayers = function() {
+    let p1Name = document.querySelector("input[name=p1]").value;
+    let p2Name = document.querySelector("input[name=p2]").value;
+    if (p1Name === "") {
+        p1Name = "player1";
+    }
+    if (p2Name === "") {
+        p2Name = "player2";
+    }
+    let player1 = Player(p1Name, "X");
+    let player2 = Player(p2Name, "O");
+    return { player1, player2 };
+}
+
 const mainGame = (function() {
+    const { player1, player2 } = getPlayers;
     toggleActive();
+    let gameStatus = {
+        playerturn: "player1"
+    }
     let onePlayerBtn = document.querySelector(".one-player");
     onePlayerBtn.addEventListener("click", toggleActive);
     
@@ -101,23 +104,27 @@ const mainGame = (function() {
     let homeBtn = document.querySelector(".home-button");
     homeBtn.addEventListener("click", renderHomePage);
 
+    let gridCells = document.querySelectorAll(".grid-cell");
+    gridCells.forEach(cell => {
+    cell.addEventListener("click", function(e) {
+        const { board } = gameBoard;
+        if (gameStatus.playerturn === "player1") {
+            board[this.id] = player1.symbol;
+            gameStatus.playerturn = "player2";
+        }
+        else {
+            board[this.id] = player2.symbol;
+            gameStatus.playerturn = "player1";
+        }
+        gameBoard.renderBoard();
+    });
+})
+
 
 
 })();
 
-const getPlayers = function() {
-    let p1Name = document.querySelector("input[name=p1]").value;
-    let p2Name = document.querySelector("input[name=p2]").value;
-    if (p1Name === "") {
-        p1Name = "player1";
-    }
-    if (p2Name === "") {
-        p2Name = "player2";
-    }
-    let player1 = Player(p1Name, "X");
-    let player2 = Player(p2Name, "O");
-    return { player1, player2 };
-}
+
 
 
 
