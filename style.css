@@ -152,7 +152,7 @@ input {
     margin-top: 45px;
 }
 
-.player-score-container, .ai-score-container {
+.player-container, .player2-container {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -161,10 +161,14 @@ input {
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #ce99ff;
+    background-color: #d7adff;
 }
 
-.tie-score-container {
+.player-container.turn, .player2-container.turn {
+    background-color: #c07bff;
+}
+
+.tie-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -199,7 +203,9 @@ input {
     width: 350px;
     height: 333px;
     margin-top: 10px;
-    border: 3px solid black;
+    border-width: 4px 3px 4px 3px;
+    border-style: solid;
+    border-color: black;
     background-color:rgb(155, 209, 255);
 }
 
@@ -216,7 +222,7 @@ input {
     justify-content: center;
     align-items: center;
     border: 2px solid black;
-    font-size: 60px;
+    font-size: 80px;
     cursor: pointer;
 }
 

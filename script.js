@@ -28,7 +28,7 @@ const Player = function(name, symbol) {
     return { name, symbol };
 }
 
-const numberOfPlayers = (function() {
+const numberOfPlayers = function() {
     let onePlayerBtn = document.querySelector(".one-player");
     let players;
     if (onePlayerBtn.classList.contains("active")) {
@@ -38,7 +38,7 @@ const numberOfPlayers = (function() {
         players = 2;
     }
     return { players };
-})();
+};
 
 
 const renderGamePage = function() {
@@ -61,6 +61,7 @@ let toggleActive = function() {
     let p2 = document.querySelector(".two-player");
     let player2Input = document.querySelector(".player-2-input");
 
+    // If p1 is already active, switch to p2
     if (p1.classList.contains("active")) {
         p1.classList.remove("active");
         p2.classList.add("active");
@@ -87,12 +88,29 @@ const getPlayers = function() {
     return { player1, player2 };
 }
 
+let gameStatus =  {
+    playerturn: "player1",
+}
+
+const renderTurn = function() {
+    let player1 = document.querySelector(".player-container");
+    let player2 = document.querySelector(".player2-container");
+    if (gameStatus.playerturn === "player1") {
+        player2.classList.remove("turn");
+        player1.classList.add("turn");
+    }
+    else {
+        player1.classList.remove("turn");
+        player2.classList.add("turn");
+    }
+    
+    
+}
+
 const mainGame = (function() {
     const { player1, player2 } = getPlayers();
     toggleActive();
-    let gameStatus = {
-        playerturn: "player1"
-    }
+    renderTurn();
     let onePlayerBtn = document.querySelector(".one-player");
     onePlayerBtn.addEventListener("click", toggleActive);
     
@@ -126,6 +144,7 @@ const mainGame = (function() {
             }
         }
         gameBoard.renderBoard();
+        renderTurn();
     });
 })
 
