@@ -161,11 +161,11 @@ input {
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #d7adff;
+    background-color: #feafff;
 }
 
 .player-container.turn, .player2-container.turn {
-    background-color: #c07bff;
+    background-color: #fd86ff;
 }
 
 .tie-container {

@@ -42,6 +42,12 @@ const numberOfPlayers = function() {
 
 
 const renderGamePage = function() {
+    const { player1, player2 } = getPlayers();
+    const player1Name = document.querySelector(".player-name");
+    const player2Name = document.querySelector(".player2-name");
+    player1Name.textContent = player1.name;
+    player2Name.textContent = player2.name;
+
     let home = document.querySelector(".home-container");
     home.style.display = "none";
     let game = document.querySelector(".game-container");
@@ -78,10 +84,10 @@ const getPlayers = function() {
     let p1Name = document.querySelector("input[name=p1]").value;
     let p2Name = document.querySelector("input[name=p2]").value;
     if (p1Name === "") {
-        p1Name = "player1";
+        p1Name = "Player1";
     }
     if (p2Name === "") {
-        p2Name = "player2";
+        p2Name = "Player2";
     }
     let player1 = Player(p1Name, "X");
     let player2 = Player(p2Name, "O");
