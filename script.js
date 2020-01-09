@@ -6,7 +6,10 @@ let gameBoard = (function() {
     const renderBoard = function() {
         for (let i = 0; i < 9; i++) {
             let gridCell = document.querySelector(`[data-position="${i}"]`);
-            if (board[i] !== null) {
+            if (board[i] === "X" || board[i] === "O") {
+                return;
+            }
+            else if (board[i] !== null) {
                 gridCell.textContent = board[i];
             }
             else {
