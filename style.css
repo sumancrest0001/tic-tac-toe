@@ -175,14 +175,14 @@ input {
     background-color: #82a9ff;
 }
 
-.reset-button-container {
+.button-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
 }
 
-.reset-button {
+.newgame-button {
     background-color: #ff7aa6;
     border: 1px solid #ff7aa6;
     font-size: 20px;

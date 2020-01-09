@@ -5,15 +5,19 @@ let gameBoard = (function() {
     }
     const renderBoard = function() {
         for (let i = 0; i < 9; i++) {
+            let gridCell = document.querySelector(`[data-position="${i}"]`);
             if (board[i] !== null) {
-                let gridCell = document.querySelector(`[data-position=${i}]`);
                 gridCell.textContent = board[i];
+            }
+            else {
+                gridCell.textContent = "";
             }
         }
     }
     const resetBoard = function() {
         for (let i = 0; i < 9; i++) {
             board[i] = null;
+            renderBoard();
         }
     }
     return { board, renderBoard, resetBoard };
@@ -84,7 +88,7 @@ const getPlayers = function() {
 }
 
 const mainGame = (function() {
-    const { player1, player2 } = getPlayers;
+    const { player1, player2 } = getPlayers();
     toggleActive();
     let gameStatus = {
         playerturn: "player1"
@@ -104,16 +108,19 @@ const mainGame = (function() {
     let homeBtn = document.querySelector(".home-button");
     homeBtn.addEventListener("click", renderHomePage);
 
+    let newGameBtn = document.querySelector(".newgame-button");
+    newGameBtn.addEventListener("click", gameBoard.resetBoard);
+
     let gridCells = document.querySelectorAll(".grid-cell");
     gridCells.forEach(cell => {
     cell.addEventListener("click", function(e) {
         const { board } = gameBoard;
         if (gameStatus.playerturn === "player1") {
-            board[this.id] = player1.symbol;
+            board[e.target.getAttribute("data-position")] = player1.symbol;
             gameStatus.playerturn = "player2";
         }
         else {
-            board[this.id] = player2.symbol;
+            board[e.target.getAttribute("data-position")] = player2.symbol;
             gameStatus.playerturn = "player1";
         }
         gameBoard.renderBoard();
