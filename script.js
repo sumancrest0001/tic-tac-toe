@@ -6,10 +6,7 @@ let gameBoard = (function() {
     const renderBoard = function() {
         for (let i = 0; i < 9; i++) {
             let gridCell = document.querySelector(`[data-position="${i}"]`);
-            if (board[i] === "X" || board[i] === "O") {
-                return;
-            }
-            else if (board[i] !== null) {
+            if (board[i] !== null) {
                 gridCell.textContent = board[i];
             }
             else {
@@ -118,13 +115,15 @@ const mainGame = (function() {
     gridCells.forEach(cell => {
     cell.addEventListener("click", function(e) {
         const { board } = gameBoard;
-        if (gameStatus.playerturn === "player1") {
-            board[e.target.getAttribute("data-position")] = player1.symbol;
-            gameStatus.playerturn = "player2";
-        }
-        else {
-            board[e.target.getAttribute("data-position")] = player2.symbol;
-            gameStatus.playerturn = "player1";
+        if (board[e.target.getAttribute("data-position")] !== "X" && board[e.target.getAttribute("data-position")] !== "O") {
+            if (gameStatus.playerturn === "player1") {
+                board[e.target.getAttribute("data-position")] = player1.symbol;
+                gameStatus.playerturn = "player2";
+            }
+            else {
+                board[e.target.getAttribute("data-position")] = player2.symbol;
+                gameStatus.playerturn = "player1";
+            }
         }
         gameBoard.renderBoard();
     });
