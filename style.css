@@ -166,6 +166,7 @@ input {
 
 .player-container.turn, .player2-container.turn {
     background-color: #fd86ff;
+    border: 2px solid black;
 }
 
 .tie-container {

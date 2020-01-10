@@ -43,6 +43,7 @@ function renderPage(type) {
     if (type === "game") {
         home.style.display = "none";
         game.style.display = "flex";
+        gameBoard.resetBoard();
         renderNames();
         renderScores();
         scores.style.display = "flex";
@@ -122,9 +123,7 @@ const checkGameOver = function() {
     const { player1, player2 } = getPlayers();
 
     let checkWin = horizontalWin() || verticalWin() || diagonalWin();
-    if (checkWin) {
-        return checkWin;
-    }
+
     function horizontalWin() {
         if (board[0] !== null && board[0] === board[1] && board[0] === board[2]) {
             return (player1.symbol === board[0]) ? renderWin(player1.name) : renderWin(player2.name);
@@ -182,7 +181,6 @@ const mainGame = (function() {
     let playBtn = document.querySelector(".play");
     playBtn.addEventListener("click", function() {
         getPlayers();
-        gameBoard.resetBoard();
         renderPage("game");
     });
     
@@ -193,7 +191,6 @@ const mainGame = (function() {
 
     let newGameBtn = document.querySelector(".newgame-button");
     newGameBtn.addEventListener("click", function() {
-        gameBoard.resetBoard();
         renderPage("game");
     });
 
@@ -211,7 +208,7 @@ const mainGame = (function() {
                 gameStatus.playerturn = "player1";
             }
         }
-        checkGameOver(); // HAVE TO DO THIS SOONER 
+        checkGameOver();
         gameBoard.renderBoard();
         renderTurn();
     });
