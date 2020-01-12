@@ -42,7 +42,12 @@ function renderPage(type) {
     const resultsContainer = document.querySelector(".results-container");
     const results = document.querySelector(".results-banner");
     const scores = document.querySelector(".scores");
+    let gridCells = document.querySelectorAll(".grid-cell");
+
     if (type === "game") {
+        gridCells.forEach(cell => {
+        cell.addEventListener("click", placeMove);
+        });
         home.style.display = "none";
         game.style.display = "flex";
         gameBoard.resetBoard();
@@ -94,14 +99,8 @@ let activateButton = function() {
 };
 
 const getPlayers = function() {
-    let p1Name = document.querySelector("input[name=p1]").value;
-    let p2Name = document.querySelector("input[name=p2]").value;
-    if (p1Name === "") {
-        p1Name = "Player1";
-    }
-    if (p2Name === "") {
-        p2Name = "Player2";
-    }
+    let p1Name = document.querySelector("input[name=p1]").value || "Player1";
+    let p2Name = document.querySelector("input[name=p2]").value || "Player2";
     let player1 = Player(p1Name, "X");
     let player2 = Player(p2Name, "O");
     return { player1, player2 };
@@ -121,11 +120,11 @@ const renderTurn = function() {
 }
 
     const { board } = gameBoard;
-    const { player1, player2 } = getPlayers();
-    let winner = "";
     const winCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
     function checkWinner(array, symbol){
+        let winner = null;
+        const { player1, player2 } = getPlayers();
         array.forEach(function(subArr){
           let counter = 0;
           subArr.forEach(function(index){
@@ -133,66 +132,15 @@ const renderTurn = function() {
               counter++;
               if (counter == 3 ){
                 winner = gameStatus.playerturn;
-                console.log(winner);
-                if (winner === "player1") {
-                    winner = player1.name;
-                }
-                else {
-                    winner = player2.name;
-                }
-                /*winner = (winner === "player1") ? player1.name : player2.name;*/
-                renderWin(winner);
+                (winner === "player1") ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
               }
             }
           });
         });
+        if (gameStatus.cellsFilled === 9 && winner === null) {
+            renderDraw();
+        }
     }
-
-/*
-    let checkWin = horizontalWin() || verticalWin() || diagonalWin();
-    let checkDraw = draw();
-
-    function horizontalWin() {
-        if (board[0] !== null && board[0] === board[1] && board[0] === board[2]) {
-            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        else if (board[3] !== null && board[3] === board[4] && board[3] === board[5]) {
-            return (player1.symbol === board[3]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        else if (board[6] !== null && board[6] === board[7] && board[6] === board[8]) {
-            return (player1.symbol === board[6]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        return false;
-    }
-    function verticalWin() {
-        if (board[0] !== null && board[0] === board[3] && board[0] === board[6]) {
-            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        else if (board[1] !== null && board[1] === board[4] && board[1] === board[7]) {
-            return (player1.symbol === board[1]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        else if (board[2] !== null && board[2] === board[5] && board[2] === board[8]) {
-            return (player1.symbol === board[2]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        return false;
-    }
-    function diagonalWin() {
-        if (board[0] !== null && board[0] === board[4] && board[0] === board[8]) {
-            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        else if (board[2] !== null && board[2] === board[4] && board[2] === board[6]) {
-            return (player1.symbol === board[2]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
-        }
-        return false;
-    }
-
-    function draw() {
-        if (gameStatus.cellsFilled === 9 && checkWin === false) {
-            gameStatus.tieScore++;
-            return renderDraw();
-        }
-        return false;
-    }*/
 
 
 function renderWin(name) {
@@ -212,6 +160,7 @@ function renderDraw() {
     scores.style.display = "none";
     resultsContainer.style.display = "flex";
     results.textContent = `It's a draw!`;
+    gameStatus.tieScore++;
     endGame();
 }
 
@@ -228,7 +177,6 @@ const mainGame = (function() {
     playBtn.addEventListener("click", function() {
         getPlayers();
         renderPage("game");
-        startGame();
     });
     
     let homeBtn = document.querySelector(".home-button");
@@ -238,7 +186,6 @@ const mainGame = (function() {
 
     let newGameBtn = document.querySelector(".newgame-button");
     newGameBtn.addEventListener("click", function() {
-        startGame();
         renderPage("game");
     });
 
@@ -254,15 +201,16 @@ function placeMove(e) {
         if (board[e.target.getAttribute("data-position")] !== "X" && board[e.target.getAttribute("data-position")] !== "O") {
             if (gameStatus.playerturn === "player1") {
                 board[e.target.getAttribute("data-position")] = player1.symbol;
+                gameStatus.cellsFilled++;
                 checkWinner(winCombos, player1.symbol);
                 gameStatus.playerturn = "player2";
             }
             else {
                 board[e.target.getAttribute("data-position")] = player2.symbol;
+                gameStatus.cellsFilled++;
                 checkWinner(winCombos, player2.symbol);
                 gameStatus.playerturn = "player1";
             }
-            gameStatus.cellsFilled++;
         }
         gameBoard.renderBoard();
         renderTurn();
@@ -277,12 +225,6 @@ function endGame() {
 });
 }
 
-function startGame() {
-        let gridCells = document.querySelectorAll(".grid-cell");
-        gridCells.forEach(cell => {
-        cell.addEventListener("click", placeMove);
-    });
-}
 
 
 
