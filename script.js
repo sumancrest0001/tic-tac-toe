@@ -120,10 +120,35 @@ const renderTurn = function() {
     }
 }
 
-const checkGameOver = function() {
     const { board } = gameBoard;
     const { player1, player2 } = getPlayers();
+    let winner = "";
+    const winCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
+    function checkWinner(array, symbol){
+        array.forEach(function(subArr){
+          let counter = 0;
+          subArr.forEach(function(index){
+            if (board[index] === symbol){
+              counter++;
+              if (counter == 3 ){
+                winner = gameStatus.playerturn;
+                console.log(winner);
+                if (winner === "player1") {
+                    winner = player1.name;
+                }
+                else {
+                    winner = player2.name;
+                }
+                /*winner = (winner === "player1") ? player1.name : player2.name;*/
+                renderWin(winner);
+              }
+            }
+          });
+        });
+    }
+
+/*
     let checkWin = horizontalWin() || verticalWin() || diagonalWin();
     let checkDraw = draw();
 
@@ -167,8 +192,8 @@ const checkGameOver = function() {
             return renderDraw();
         }
         return false;
-    }
-}
+    }*/
+
 
 function renderWin(name) {
     const resultsContainer = document.querySelector(".results-container");
@@ -229,15 +254,16 @@ function placeMove(e) {
         if (board[e.target.getAttribute("data-position")] !== "X" && board[e.target.getAttribute("data-position")] !== "O") {
             if (gameStatus.playerturn === "player1") {
                 board[e.target.getAttribute("data-position")] = player1.symbol;
+                checkWinner(winCombos, player1.symbol);
                 gameStatus.playerturn = "player2";
             }
             else {
                 board[e.target.getAttribute("data-position")] = player2.symbol;
+                checkWinner(winCombos, player2.symbol);
                 gameStatus.playerturn = "player1";
             }
             gameStatus.cellsFilled++;
         }
-        checkGameOver();
         gameBoard.renderBoard();
         renderTurn();
 };
