@@ -18,6 +18,7 @@ let gameBoard = (function() {
         for (let i = 0; i < 9; i++) {
             board[i] = null;
             renderBoard();
+            gameStatus.cellsFilled = 0;
         }
     }
     return { board, renderBoard, resetBoard };
@@ -32,6 +33,7 @@ let gameStatus =  {
     p1Score: 0,
     tieScore: 0,
     p2Score: 0,
+    cellsFilled: 0,
 }
 
 function renderPage(type) {
@@ -73,7 +75,7 @@ function renderScores() {
     player2Score.textContent = gameStatus.p2Score;
 }
 
-let toggleActive = function() {
+let activateButton = function() {
     let p1 = document.querySelector(".one-player");
     let p2 = document.querySelector(".two-player");
     let player2Input = document.querySelector(".player-2-input");
@@ -123,37 +125,49 @@ const checkGameOver = function() {
     const { player1, player2 } = getPlayers();
 
     let checkWin = horizontalWin() || verticalWin() || diagonalWin();
+    let checkDraw = draw();
+    if (checkWin || checkDraw) {
+        endGame();
+    }
 
     function horizontalWin() {
         if (board[0] !== null && board[0] === board[1] && board[0] === board[2]) {
-            return (player1.symbol === board[0]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         else if (board[3] !== null && board[3] === board[4] && board[3] === board[5]) {
-            return (player1.symbol === board[3]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[3]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         else if (board[6] !== null && board[6] === board[7] && board[6] === board[8]) {
-            return (player1.symbol === board[6]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[6]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         return false;
     }
     function verticalWin() {
         if (board[0] !== null && board[0] === board[3] && board[0] === board[6]) {
-            return (player1.symbol === board[0]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         else if (board[1] !== null && board[1] === board[4] && board[1] === board[7]) {
-            return (player1.symbol === board[1]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[1]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         else if (board[2] !== null && board[2] === board[5] && board[2] === board[8]) {
-            return (player1.symbol === board[2]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[2]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         return false;
     }
     function diagonalWin() {
         if (board[0] !== null && board[0] === board[4] && board[0] === board[8]) {
-            return (player1.symbol === board[0]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[0]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
         }
         else if (board[2] !== null && board[2] === board[4] && board[2] === board[6]) {
-            return (player1.symbol === board[2]) ? renderWin(player1.name) : renderWin(player2.name);
+            return (player1.symbol === board[2]) ? (renderWin(player1.name), gameStatus.p1Score++) : (renderWin(player2.name), gameStatus.p2Score++);
+        }
+        return false;
+    }
+
+    function draw() {
+        if (gameStatus.cellsFilled === 9 && checkWin === false) {
+            gameStatus.tieScore++;
+            return renderDraw();
         }
         return false;
     }
@@ -168,15 +182,23 @@ function renderWin(name) {
     results.textContent = `${name} wins!`;
 }
 
+function renderDraw() {
+    const resultsContainer = document.querySelector(".results-container");
+    const results = document.querySelector(".results-banner");
+    const scores = document.querySelector(".scores");
+    scores.style.display = "none";
+    resultsContainer.style.display = "flex";
+    results.textContent = `It's a draw!`;
+}
+
 const mainGame = (function() {
-    const { player1, player2 } = getPlayers();
-    toggleActive();
+    activateButton();
     renderTurn();
     let onePlayerBtn = document.querySelector(".one-player");
-    onePlayerBtn.addEventListener("click", toggleActive);
+    onePlayerBtn.addEventListener("click", activateButton);
     
     let twoPlayerBtn = document.querySelector(".two-player");
-    twoPlayerBtn.addEventListener("click", toggleActive);
+    twoPlayerBtn.addEventListener("click", activateButton);
 
     let playBtn = document.querySelector(".play");
     playBtn.addEventListener("click", function() {
@@ -191,13 +213,19 @@ const mainGame = (function() {
 
     let newGameBtn = document.querySelector(".newgame-button");
     newGameBtn.addEventListener("click", function() {
+        startGame();
         renderPage("game");
     });
 
     let gridCells = document.querySelectorAll(".grid-cell");
     gridCells.forEach(cell => {
-    cell.addEventListener("click", function(e) {
-        const { board } = gameBoard;
+    cell.addEventListener("click", placeMove);
+})
+})();
+
+function placeMove(e) {
+    const { board } = gameBoard;
+    const { player1, player2 } = getPlayers();
         if (board[e.target.getAttribute("data-position")] !== "X" && board[e.target.getAttribute("data-position")] !== "O") {
             if (gameStatus.playerturn === "player1") {
                 board[e.target.getAttribute("data-position")] = player1.symbol;
@@ -207,16 +235,28 @@ const mainGame = (function() {
                 board[e.target.getAttribute("data-position")] = player2.symbol;
                 gameStatus.playerturn = "player1";
             }
+            gameStatus.cellsFilled++;
         }
         checkGameOver();
         gameBoard.renderBoard();
         renderTurn();
+};
+
+
+function endGame() {
+    gameStatus.cellsFilled = 0;
+    let gridCells = document.querySelectorAll(".grid-cell");
+    gridCells.forEach(cell => {
+    cell.removeEventListener("click", placeMove);
+});
+}
+
+function startGame() {
+        let gridCells = document.querySelectorAll(".grid-cell");
+        gridCells.forEach(cell => {
+        cell.addEventListener("click", placeMove);
     });
-})
-})();
-
-
-
+}
 
 
 
