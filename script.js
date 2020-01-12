@@ -126,9 +126,6 @@ const checkGameOver = function() {
 
     let checkWin = horizontalWin() || verticalWin() || diagonalWin();
     let checkDraw = draw();
-    if (checkWin || checkDraw) {
-        endGame();
-    }
 
     function horizontalWin() {
         if (board[0] !== null && board[0] === board[1] && board[0] === board[2]) {
@@ -180,6 +177,7 @@ function renderWin(name) {
     scores.style.display = "none";
     resultsContainer.style.display = "flex";
     results.textContent = `${name} wins!`;
+    endGame();
 }
 
 function renderDraw() {
@@ -189,6 +187,7 @@ function renderDraw() {
     scores.style.display = "none";
     resultsContainer.style.display = "flex";
     results.textContent = `It's a draw!`;
+    endGame();
 }
 
 const mainGame = (function() {
@@ -204,6 +203,7 @@ const mainGame = (function() {
     playBtn.addEventListener("click", function() {
         getPlayers();
         renderPage("game");
+        startGame();
     });
     
     let homeBtn = document.querySelector(".home-button");

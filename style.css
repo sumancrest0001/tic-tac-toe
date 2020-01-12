@@ -157,16 +157,16 @@ input {
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 5px;
     font-size: 25px;
     min-width: 150px;
-    background-color: #feafff;
+    background-color: #b198ff;
 }
 
 .player-container.turn, .player2-container.turn {
-    background-color: #fd86ff;
-    border: 2px solid black;
+    background-color: #8f6bff;
+    border: 4px solid black;
 }
 
 .tie-container {
@@ -239,4 +239,7 @@ input {
 .results-banner {
     font-size: 40px;
     padding: 12px 35px 12px 35px;
+    background-color: #ff5976;
+    border-radius: 5px;
+    border: 5px solid black;
 }
