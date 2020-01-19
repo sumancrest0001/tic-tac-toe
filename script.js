@@ -1,12 +1,10 @@
 let gameBoard = (function() {
-    const board = [];
-    for (let i = 0; i < 9; i++) {
-        board[i] = null;
-    }
+    const board = [0,1,2,3,4,5,6,7,8];
+
     const renderBoard = function() {
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < board.length; i++) {
             let gridCell = document.querySelector(`[data-position="${i}"]`);
-            if (board[i] !== null) {
+            if (board[i] === "X" || board[i] === "O") {
                 gridCell.textContent = board[i];
             }
             else {
@@ -16,7 +14,7 @@ let gameBoard = (function() {
     }
     const resetBoard = function() {
         for (let i = 0; i < 9; i++) {
-            board[i] = null;
+            board[i] = i;
             renderBoard();
             gameStatus.cellsFilled = 0;
         }
@@ -34,6 +32,13 @@ let gameStatus =  {
     tieScore: 0,
     p2Score: 0,
     cellsFilled: 0,
+    ai: false,
+}
+
+function resetScores() {
+    gameStatus.p1Score = 0;
+    gameStatus.p2Score = 0;
+    gameStatus.tieScore = 0;
 }
 
 function renderPage(type) {
@@ -60,6 +65,7 @@ function renderPage(type) {
     else {
         home.style.display = "block";
         game.style.display = "none";
+        resetScores();
     }
 }
 
@@ -100,10 +106,24 @@ let activateButton = function() {
 
 const getPlayers = function() {
     let p1Name = document.querySelector("input[name=p1]").value || "Player1";
-    let p2Name = document.querySelector("input[name=p2]").value || "Player2";
     let player1 = Player(p1Name, "X");
-    let player2 = Player(p2Name, "O");
+
+    let player2;
+    if (playerVsAi()) {
+        gameStatus.ai = true;
+        player2 = Player("AI", "O");
+    }
+    else {
+        gameStatus.ai = false;
+        let p2Name = document.querySelector("input[name=p2]").value || "Player2";
+        player2 = Player(p2Name, "O");
+    }
     return { player1, player2 };
+}
+
+function playerVsAi() {
+    const onePlayerBtn = document.querySelector(".one-player");
+    return (onePlayerBtn.classList.contains("active")) ? true : false;
 }
 
 const renderTurn = function() {
@@ -125,7 +145,7 @@ const renderTurn = function() {
     function checkWinner(array, symbol){
         let winner = null;
         const { player1, player2 } = getPlayers();
-        array.forEach(function(subArr){
+        winCombos.forEach(function(subArr){
           let counter = 0;
           subArr.forEach(function(index){
             if (board[index] === symbol){
@@ -205,9 +225,16 @@ function placeMove(e) {
                 checkWinner(winCombos, player1.symbol);
                 gameStatus.playerturn = "player2";
             }
-            else {
+            else if (gameStatus.playerturn === "player2" && !gameStatus.ai) {
                 board[e.target.getAttribute("data-position")] = player2.symbol;
                 gameStatus.cellsFilled++;
+                checkWinner(winCombos, player2.symbol);
+                gameStatus.playerturn = "player1";
+            }
+            if (gameStatus.playerturn === "player2" && gameStatus.ai) {
+                gameStatus.cellsFilled++;
+                let aiIndex = aiPlay();
+                board[aiIndex] = player2.symbol;
                 checkWinner(winCombos, player2.symbol);
                 gameStatus.playerturn = "player1";
             }
@@ -216,15 +243,96 @@ function placeMove(e) {
         renderTurn();
 };
 
-
 function endGame() {
     gameStatus.cellsFilled = 0;
     let gridCells = document.querySelectorAll(".grid-cell");
     gridCells.forEach(cell => {
     cell.removeEventListener("click", placeMove);
 });
-}
 
+}
+function aiPlay() {
+    const { player2 } = getPlayers();
+
+    function winning(board, player){
+        if (
+            (board[0] == player && board[1] == player && board[2] == player) ||
+            (board[3] == player && board[4] == player && board[5] == player) ||
+            (board[6] == player && board[7] == player && board[8] == player) ||
+            (board[0] == player && board[3] == player && board[6] == player) ||
+            (board[1] == player && board[4] == player && board[7] == player) ||
+            (board[2] == player && board[5] == player && board[8] == player) ||
+            (board[0] == player && board[4] == player && board[8] == player) ||
+            (board[2] == player && board[4] == player && board[6] == player)
+            ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+   
+    function emptyCells(board) {
+        return board.filter(cell => cell !== "O" && cell !== "X");
+    }
+
+    let bestPlay = minimax(gameBoard.board, player2.symbol).index;
+        
+    function minimax(newBoard, player) {
+        let human = "X";
+        let ai = "O";
+
+        let availableSpots = emptyCells(newBoard);
+    
+        if (winning(newBoard, human)) {
+            return { score: -10 };
+        }
+        else if (winning(newBoard, ai)) {
+            return { score: 10 }
+        }
+        else if (availableSpots.length === 0) {
+            return { score: 0 };
+        }
+        let moves = [];
+        for (let i = 0; i < availableSpots.length; i++) {
+            let move = {};
+            move.index = newBoard[availableSpots[i]];
+            newBoard[availableSpots[i]] = player;
+    
+            if (player === ai) {
+                let result = minimax(newBoard, human);
+                move.score = result.score;
+            }
+            else {
+                let result = minimax(newBoard, ai);
+                move.score = result.score;
+            }
+            newBoard[availableSpots[i]] = move.index;
+            moves.push(move);
+        }
+    
+            let bestMove;
+            if (player === ai) {
+                let bestScore = -10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score > bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            }
+            else {
+                let bestScore = 10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score < bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            }
+            return moves[bestMove];
+    }
+    return bestPlay;
+}
 
 
 
