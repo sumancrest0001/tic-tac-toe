@@ -15,9 +15,9 @@ let gameBoard = (function() {
     const resetBoard = function() {
         for (let i = 0; i < 9; i++) {
             board[i] = i;
-            renderBoard();
-            gameStatus.cellsFilled = 0;
         }
+        renderBoard();
+        gameStatus.cellsFilled = 0;
     }
     return { board, renderBoard, resetBoard };
 })();
@@ -58,6 +58,8 @@ function renderPage(type) {
         gameBoard.resetBoard();
         renderNames();
         renderScores();
+        gameStatus.playerturn = "player1";
+        renderTurn();
         scores.style.display = "flex";
         resultsContainer.style.display = "none";
         results.textContent = "";
