@@ -155,7 +155,6 @@ input {
 .player-container, .player2-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     align-items: center;
     border: 2px solid black;
     border-radius: 5px;
